@@ -1,0 +1,12 @@
+{
+  "description": "Gamified English learning for Vietnamese learners, combining interactive lessons, RPG battles, vocabulary reviews, and competitive leagues to build skills through play.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  },
+  "title": "LexiQuest: Đấu Trường Anh Ngữ",
+  "language": "vi"
+}
