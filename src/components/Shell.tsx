@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
-import { Coins, Flame, Skull, Home, Swords, Hammer, Castle, Trophy, Sparkles, GraduationCap } from 'lucide-react'
-import { useGame, XP_PER_LEVEL } from '../game/store'
+import { Coins, Flame, Skull, Home, Swords, Hammer, Castle, Trophy, Sparkles, GraduationCap, LogOut } from 'lucide-react'
+import { useGame, XP_PER_LEVEL, CEFR_LABEL } from '../game/store'
 import { rankLabel, type ScreenId } from '../game/data'
-import { cx } from './ui'
+import { cx, HeroAvatar } from './ui'
 
 const NAV: { id: ScreenId; label: string; short: string; icon: typeof Home }[] = [
   { id: 'home', label: 'Sảnh Chính & Nhân Vật', short: 'Sảnh', icon: Home },
@@ -12,7 +12,7 @@ const NAV: { id: ScreenId; label: string; short: string; icon: typeof Home }[] =
   { id: 'league', label: 'Bảng Xếp Hạng', short: 'Xếp Hạng', icon: Trophy },
 ]
 
-function Logo() {
+export function Logo() {
   return (
     <div className="flex items-center gap-2.5">
       <div className="relative flex h-9 w-9 items-center justify-center">
@@ -30,7 +30,7 @@ function Logo() {
 }
 
 function TopBar() {
-  const { level, xp, gold, runes, streak, rp, go, setInvTab } = useGame()
+  const { level, xp, gold, runes, streak, rp, go, setInvTab, user, signOut } = useGame()
   const pct = ((xp % XP_PER_LEVEL) / XP_PER_LEVEL) * 100
   const rank = rankLabel(rp)
   return (
@@ -63,8 +63,8 @@ function TopBar() {
 
           <div className="flex shrink-0 items-center gap-1.5 rounded-xl border border-indigo/40 bg-indigo/10 px-2.5 py-2 text-xs font-semibold text-indigo-300">
             <GraduationCap size={15} />
-            <span className="font-display">B1</span>
-            <span className="hidden text-indigo-300/70 xl:inline">- Intermediate</span>
+            <span className="font-display">{user!.cefr}</span>
+            <span className="hidden text-indigo-300/70 xl:inline">- {CEFR_LABEL[user!.cefr]}</span>
           </div>
 
           <div className="flex-1 max-lg:hidden" />
@@ -84,6 +84,9 @@ function TopBar() {
               <div className="font-display text-[10px] text-slate-400 tabular-nums">{rp.toLocaleString('en-US')} RP</div>
             </div>
           </div>
+          <button onClick={signOut} className="shrink-0 rounded-xl border border-line bg-surface p-2.5 text-slate-400 hover:text-coral lg:hidden" aria-label="Đăng xuất">
+            <LogOut size={16} />
+          </button>
         </div>
       </div>
     </header>
@@ -100,7 +103,7 @@ function Stat({ icon, color, value, label }: { icon: ReactNode; color: string; v
 }
 
 function SideNav() {
-  const { screen, go, runes } = useGame()
+  const { screen, go, runes, user, cls, signOut } = useGame()
   return (
     <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-line bg-[#0c1324] lg:flex">
       <div className="flex h-16 items-center border-b border-line px-5">
@@ -129,6 +132,16 @@ function SideNav() {
           )
         })}
       </nav>
+      <div className="mx-3 flex items-center gap-3 rounded-xl border border-line bg-surface p-3">
+        <HeroAvatar cls={cls} size={36} />
+        <div className="min-w-0 flex-1">
+          <div className="truncate text-sm font-semibold text-white">@{user!.name}</div>
+          <div className="truncate text-[11px] text-slate-500">{user!.guest ? 'Tài khoản Khách' : user!.email}</div>
+        </div>
+        <button onClick={signOut} className="rounded-lg p-2 text-slate-400 hover:bg-coral/10 hover:text-coral" aria-label="Đăng xuất" title="Đăng xuất">
+          <LogOut size={16} />
+        </button>
+      </div>
       <div className="m-3 rounded-xl border border-line bg-surface p-4">
         <div className="text-[11px] font-semibold tracking-wider text-slate-500 uppercase">Mẹo hôm nay</div>
         <p className="mt-1.5 text-xs leading-relaxed text-slate-300">

@@ -43,6 +43,22 @@ export interface Quest {
   claimed: boolean
 }
 
+export type Cefr = 'A2' | 'B1' | 'B2' | 'C1'
+
+export const CEFR_LABEL: Record<Cefr, string> = {
+  A2: 'Elementary',
+  B1: 'Intermediate',
+  B2: 'Upper-Intermediate',
+  C1: 'Advanced',
+}
+
+export interface User {
+  name: string
+  email: string
+  cefr: Cefr
+  guest?: boolean
+}
+
 export interface Toast {
   id: number
   text: string
@@ -50,6 +66,9 @@ export interface Toast {
 }
 
 interface GameCtx {
+  user: User | null
+  signIn: (u: User, cls?: ClassId) => void
+  signOut: () => void
   screen: ScreenId
   go: (s: ScreenId) => void
   cls: ClassId
@@ -86,6 +105,7 @@ const Ctx = createContext<GameCtx | null>(null)
 export const XP_PER_LEVEL = 1000
 
 export function GameProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null)
   const [screen, setScreen] = useState<ScreenId>('home')
   const [cls, setCls] = useState<ClassId>('wordsmith')
   const [items, setItems] = useState<Item[]>(INITIAL_ITEMS)
@@ -187,9 +207,24 @@ export function GameProvider({ children }: { children: ReactNode }) {
     [quests, toast],
   )
 
+  const signIn = useCallback((u: User, c?: ClassId) => {
+    setUser(u)
+    if (c) setCls(c)
+    setScreen('home')
+    window.scrollTo({ top: 0 })
+  }, [])
+
+  const signOut = useCallback(() => {
+    setUser(null)
+    setBattleRequest(null)
+  }, [])
+
   const level = Math.floor(xp / XP_PER_LEVEL)
 
   const value: GameCtx = {
+    user,
+    signIn,
+    signOut,
     screen,
     go,
     cls,

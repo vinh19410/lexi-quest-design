@@ -38,7 +38,7 @@ export default function League() {
   const rows: Row[] = useMemo(() => {
     const me: Row = {
       id: 'me',
-      name: 'LexiHero (Bạn)',
+      name: `${g.user!.name} (Bạn)`,
       cls: g.cls,
       weapon: `${myWeapon.name} +${myWeapon.level}`,
       rarity: myWeapon.rarity,
@@ -50,7 +50,7 @@ export default function League() {
     }
     const all = [...LEAGUE_PLAYERS, me]
     return tab === 'pvp' ? all.sort((a, b) => b.rp - a.rp) : all.sort((a, b) => b.mastered - a.mastered || b.streak - a.streak)
-  }, [g.cls, g.rp, g.streak, g.quests, myWeapon, tab])
+  }, [g.user, g.cls, g.rp, g.streak, g.quests, myWeapon, tab])
 
   const n = rows.length
   const myRank = rows.findIndex((r) => r.me) + 1

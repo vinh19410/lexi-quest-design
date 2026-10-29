@@ -363,7 +363,7 @@ export default function Battle() {
         <div className="relative grid grid-cols-[1fr_auto_1fr] items-start gap-3 sm:gap-6">
           <FighterCard
             side="me"
-            name="@LexiHero"
+            name={`@${g.user!.name}`}
             title={`${clsInfo.name} · ${rank.label}`}
             cls={g.cls}
             f={me}
@@ -450,7 +450,7 @@ export default function Battle() {
             </div>
           )}
 
-          {(phase === 'searching' || phase === 'matched') && <Matchmaking phase={phase} cfg={cfg} t={searchT} rank={rank.label} />}
+          {(phase === 'searching' || phase === 'matched') && <Matchmaking phase={phase} cfg={cfg} t={searchT} rank={`${g.user!.cefr} / ${rank.label}`} />}
         </section>
 
         <aside className="card flex flex-col p-4">
@@ -608,7 +608,7 @@ function Matchmaking({ phase, cfg, t, rank }: { phase: Phase; cfg: Config; t: nu
             <span className="absolute top-6 right-8 h-2 w-2 animate-ping rounded-full bg-gold" />
           </div>
           <div className="mt-5 font-display text-lg font-bold text-white">
-            {cfg.mode === 'friend' ? 'Đang chờ bạn bè vào phòng 4829...' : `Đang tìm đối thủ cùng bậc B1 / ${rank}...`}
+            {cfg.mode === 'friend' ? 'Đang chờ bạn bè vào phòng 4829...' : `Đang tìm đối thủ cùng bậc ${rank}...`}
           </div>
           <div className="mt-1 font-display text-sm text-slate-500 tabular-nums">{t.toFixed(1)}s</div>
         </>

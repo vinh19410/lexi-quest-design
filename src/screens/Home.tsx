@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Swords, Users, Castle, Copy, Check, ChevronRight, Target, Gift, Radio, LogIn, Sparkles } from 'lucide-react'
 import { useGame } from '../game/store'
-import { CLASSES, MODULES, SLOT_LABEL, type Slot } from '../game/data'
+import { CLASSES, MODULES, SLOT_LABEL, rankLabel, type Slot } from '../game/data'
 import { HeroAvatar, ItemIcon, Modal, Pill, StatPanel, Bar, cx, statLine } from '../components/ui'
 
 const SLOTS: Slot[] = ['weapon', 'armor', 'accessory', 'pet']
@@ -19,7 +19,7 @@ export default function Home() {
         <div className="relative flex flex-wrap items-center justify-between gap-3">
           <div>
             <div className="font-display text-[11px] font-semibold tracking-[0.2em] text-slate-500 uppercase">Nhân vật của bạn</div>
-            <h1 className="font-display text-2xl font-bold text-white">@LexiHero</h1>
+            <h1 className="font-display text-2xl font-bold text-white">@{g.user!.name}</h1>
           </div>
           <div className="flex rounded-xl border border-line bg-slate-950/50 p-1" role="tablist">
             {CLASSES.map((c) => {
@@ -107,7 +107,7 @@ export default function Home() {
               <Radio size={11} className="animate-pulse" /> 1,284 người đang tìm trận
             </Pill>
             <div className="mt-3 font-display text-2xl font-bold text-white sm:text-3xl">Đấu Xếp Hạng 1v1</div>
-            <div className="font-display text-sm font-semibold text-white/70">Ranked PvP · B1 / Gold II</div>
+            <div className="font-display text-sm font-semibold text-white/70">Ranked PvP · {g.user!.cefr} / {rankLabel(g.rp).label}</div>
             <div className="mt-4 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 font-display text-sm font-bold text-indigo">
               <Swords size={16} /> Tìm Trận Ngay
             </div>

@@ -59,7 +59,7 @@ function Gear() {
         <div className="flex items-center gap-4">
           <HeroAvatar cls={g.cls} size={64} />
           <div>
-            <div className="font-display font-bold text-white">@LexiHero</div>
+            <div className="font-display font-bold text-white">@{g.user!.name}</div>
             <div className="text-xs" style={{ color: cls.color }}>{cls.name} · {cls.vi}</div>
           </div>
         </div>
